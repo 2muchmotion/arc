@@ -151,6 +151,23 @@ function getUtilityContent(utility) {
         <button class="btn btn-secondary" id="json-minify">Minify</button>
       </div>
       <div class="output-area" id="json-output"></div>
+    `,
+    discord: `
+      <h2>Discord Webhook</h2>
+      <div class="input-group">
+        <label>Webhook URL <span class="api-key-note">Channel Settings → Integrations → Webhooks</span></label>
+        <input type="url" id="discord-webhook" placeholder="https://discord.com/api/webhooks/...">
+      </div>
+      <div class="input-group">
+        <label>Username (optional)</label>
+        <input type="text" id="discord-username" placeholder="Custom bot name">
+      </div>
+      <div class="input-group">
+        <label>Message</label>
+        <textarea id="discord-message" placeholder="Your message here..." rows="4"></textarea>
+      </div>
+      <button class="btn" id="discord-send">Send to Discord</button>
+      <div class="output-area" id="discord-status" style="margin-top:1rem;min-height:auto"></div>
     `
   };
   return contents[utility] || '<p>Utility not found.</p>';
@@ -165,7 +182,8 @@ function initUtility(utility) {
     units: initUnits,
     color: initColor,
     base64: initBase64,
-    json: initJson
+    json: initJson,
+    discord: initDiscord
   };
   (inits[utility] || (() => {}))();
 }
@@ -493,6 +511,69 @@ function initBase64() {
       output.textContent = 'Error: Invalid Base64';
       output.classList.add('error');
     }
+  });
+}
+
+// Discord Webhook
+function initDiscord() {
+  const webhookInput = document.getElementById('discord-webhook');
+  const usernameInput = document.getElementById('discord-username');
+  const messageInput = document.getElementById('discord-message');
+  const sendBtn = document.getElementById('discord-send');
+  const statusDiv = document.getElementById('discord-status');
+
+  sendBtn.addEventListener('click', async () => {
+    const url = webhookInput.value.trim();
+    const message = messageInput.value.trim();
+
+    if (!url) {
+      statusDiv.textContent = 'Enter a webhook URL';
+      statusDiv.classList.add('error');
+      return;
+    }
+    if (!url.includes('discord.com/api/webhooks/')) {
+      statusDiv.textContent = 'Invalid webhook URL';
+      statusDiv.classList.add('error');
+      return;
+    }
+    if (!message) {
+      statusDiv.textContent = 'Enter a message';
+      statusDiv.classList.add('error');
+      return;
+    }
+
+    sendBtn.disabled = true;
+    statusDiv.textContent = 'Sending...';
+    statusDiv.classList.remove('error', 'success');
+
+    try {
+      const body = { content: message };
+      const username = usernameInput.value.trim();
+      if (username) body.username = username;
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        statusDiv.textContent = '✓ Sent successfully';
+        statusDiv.classList.remove('error');
+        statusDiv.classList.add('success');
+        messageInput.value = '';
+      } else {
+        const err = await res.json().catch(() => ({}));
+        statusDiv.textContent = 'Error: ' + (err.message || res.statusText || res.status);
+        statusDiv.classList.add('error');
+        statusDiv.classList.remove('success');
+      }
+    } catch (err) {
+      statusDiv.textContent = 'Error: ' + err.message;
+      statusDiv.classList.add('error');
+      statusDiv.classList.remove('success');
+    }
+    sendBtn.disabled = false;
   });
 }
 

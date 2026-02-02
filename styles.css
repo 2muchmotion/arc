@@ -449,6 +449,10 @@ textarea {
   color: var(--error);
 }
 
+.output-area.success {
+  color: var(--success);
+}
+
 .btn-row {
   display: flex;
   gap: 0.5rem;
