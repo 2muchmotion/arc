@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Utility Hub — All-in-One Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  
+  <header class="header">
+    <h1 class="logo">Utility Hub</h1>
+    <p class="tagline">Simple tools, powerful results</p>
+  </header>
+
+  <main class="main">
+    <section class="utility-grid">
+      <button class="utility-card" data-utility="calculator">
+        <span class="utility-icon">⌗</span>
+        <span class="utility-name">Calculator</span>
+        <span class="utility-desc">Basic math operations</span>
+      </button>
+      <button class="utility-card" data-utility="rng">
+        <span class="utility-icon">⚄</span>
+        <span class="utility-name">Random Generator</span>
+        <span class="utility-desc">Numbers, dice, passwords</span>
+      </button>
+      <button class="utility-card" data-utility="time">
+        <span class="utility-icon">◷</span>
+        <span class="utility-name">Time Converter</span>
+        <span class="utility-desc">Timezone & format conversion</span>
+      </button>
+      <button class="utility-card" data-utility="gemini">
+        <span class="utility-icon">✦</span>
+        <span class="utility-name">Gemini AI</span>
+        <span class="utility-desc">Chat with Google's AI</span>
+      </button>
+      <button class="utility-card" data-utility="units">
+        <span class="utility-icon">↔</span>
+        <span class="utility-name">Unit Converter</span>
+        <span class="utility-desc">Length, weight, temperature</span>
+      </button>
+      <button class="utility-card" data-utility="color">
+        <span class="utility-icon">◐</span>
+        <span class="utility-name">Color Picker</span>
+        <span class="utility-desc">Pick & convert colors</span>
+      </button>
+      <button class="utility-card" data-utility="base64">
+        <span class="utility-icon">⎔</span>
+        <span class="utility-name">Base64</span>
+        <span class="utility-desc">Encode & decode text</span>
+      </button>
+      <button class="utility-card" data-utility="json">
+        <span class="utility-icon">{ }</span>
+        <span class="utility-name">JSON Formatter</span>
+        <span class="utility-desc">Format & validate JSON</span>
+      </button>
+    </section>
+
+    <section class="utility-panel hidden" id="utility-panel">
+      <button class="close-panel" aria-label="Close">×</button>
+      <div class="panel-content" id="panel-content"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
